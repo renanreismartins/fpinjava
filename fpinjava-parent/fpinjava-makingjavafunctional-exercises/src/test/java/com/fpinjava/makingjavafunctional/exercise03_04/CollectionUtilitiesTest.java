@@ -1,6 +1,5 @@
 package com.fpinjava.makingjavafunctional.exercise03_04;
 
-import static com.fpinjava.makingjavafunctional.exercise03_03.CollectionUtilities.list;
 import static com.fpinjava.makingjavafunctional.exercise03_04.CollectionUtilities.*;
 import static org.junit.Assert.*;
 
