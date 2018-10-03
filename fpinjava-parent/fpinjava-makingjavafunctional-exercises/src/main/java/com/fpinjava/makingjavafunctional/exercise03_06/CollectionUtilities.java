@@ -46,16 +46,47 @@ public class CollectionUtilities {
     return Collections.unmodifiableList(workList);
   }
 
-  public static <T, U> U foldLeft(List<T> ts,
-                                  U identity,
+  public static <T, U> U foldLeft(List<T> ts,U identity,
                                   Function<U, Function<T, U>> f) {
-    throw new RuntimeException("To be implemented");
+    U result = identity;
+    for (T t : ts) {
+      result = f.apply(result).apply(t);
+    }
+    return result;
+  }
+
+  public static <T, U> U foldLeft2(List<T> ts,
+                                   U identity,
+                                   Function<U, Function<T, U>> f) {
+    List<T> ts1 = copy(ts);
+    //Collections.reverse(ts1);
+
+    U result = identity;
+    for (T t : ts1) {
+      result = f.apply(result).apply(t);
+    }
+
+    return result;
   }
 
   public static <T> List<T> append(List<T> list, T t) {
     List<T> ts = copy(list);
     ts.add(t);
     return Collections.unmodifiableList(ts);
+  }
+
+  static String addSI(String s, Integer i) {
+    return "(" + s + " + " + i + ")";
+  }
+
+  public static void main(String[] args) {
+
+    List<Integer> list = list(1, 2, 3, 4, 5);
+    String identity = "0";
+    Function<String, Function<Integer, String>> f = x -> y -> addSI(x, y);
+
+    String s = foldLeft2(list, identity, f);
+    System.out.println(s);
   }
 
 }

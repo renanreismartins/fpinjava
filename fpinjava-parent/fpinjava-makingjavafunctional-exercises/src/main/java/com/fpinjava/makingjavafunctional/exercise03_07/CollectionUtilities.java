@@ -4,6 +4,7 @@ import com.fpinjava.common.Function;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -59,7 +60,15 @@ public class CollectionUtilities {
   public static <T, U> U foldRight(List<T> ts,
                                    U identity,
                                    Function<T, Function<U, U>> f) {
-    throw new RuntimeException("To be implemented");
+    List<T> ts1 = copy(ts);
+    Collections.reverse(ts1);
+
+
+    U result = identity;
+    for (T t : ts) {
+      //result = f.apply(result).apply(t);
+    }
+    return result;
   }
 
   public static <T> List<T> append(List<T> list, T t) {
