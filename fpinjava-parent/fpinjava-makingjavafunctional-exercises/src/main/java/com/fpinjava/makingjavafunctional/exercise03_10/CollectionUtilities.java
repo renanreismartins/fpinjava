@@ -46,22 +46,9 @@ public class CollectionUtilities {
     return Collections.unmodifiableList(workList);
   }
 
-  public static <T, U> U foldLeft(List<T> ts,
-                                  U identity,
-                                  Function<U, Function<T, U>> f) {
-    U result = identity;
-    for (T t : ts) {
-      result = f.apply(result).apply(t);
-    }
-    return result;
-  }
 
-  public static <T, U> U foldRight(List<T> ts, U identity,
-                                   Function<T, Function<U, U>> f) {
-    return ts.isEmpty()
-        ? identity
-        : f.apply(head(ts)).apply(foldRight(tail(ts), identity, f));
-  }
+
+
 
   public static <T> List<T> append(List<T> list, T t) {
     List<T> ts = copy(list);
@@ -81,11 +68,30 @@ public class CollectionUtilities {
     return foldLeft(list, list(), x -> y -> foldLeft(x, list(y), a -> b -> append(a, b)));
   }
 
+  public static <T, U> U foldLeft(List<T> ts,
+                                  U identity,
+                                  Function<U, Function<T, U>> f) {
+    U result = identity;
+    for (T t : ts) {
+      result = f.apply(result).apply(t);
+    }
+    return result;
+  }
+
   public static <T, U> List<U> mapViaFoldLeft(List<T> list, Function<T, U> f) {
-    throw new RuntimeException("To be implemented");
+    return foldLeft(list, Arrays.asList(), a -> b -> append(a, f.apply(b)));
+
+  }
+
+  public static <T, U> U foldRight(List<T> ts, U identity,
+                                   Function<T, Function<U, U>> f) {
+    return ts.isEmpty()
+            ? identity
+            : f.apply(head(ts)).apply(foldRight(tail(ts), identity, f));
   }
 
   public static <T, U> List<U> mapViaFoldRight(List<T> list, Function<T, U> f) {
-    throw new RuntimeException("To be implemented");
+    return foldRight(list, Arrays.asList(), a -> b -> prepend(f.apply(a), b));
+    // emptyList -> element -> f(element)
   }
 }

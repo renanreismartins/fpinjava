@@ -63,6 +63,7 @@ public class CollectionUtilities {
     return foldRightAux(l,identity, f);
   }
 
+  // this is a recursive foldLeft :| isnt it?
   public static <T, U> U foldRightAux(List<T> ts, U identity,
                                    Function<T, Function<U, U>> f) {
 
