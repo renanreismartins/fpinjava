@@ -35,7 +35,7 @@ public abstract class List<A> {
 
     @Override
     public List<A> setHead(A h) {
-      return new Cons<>(h, list());
+      throw new IllegalStateException("setHead called on empty list");
     }
   }
 
