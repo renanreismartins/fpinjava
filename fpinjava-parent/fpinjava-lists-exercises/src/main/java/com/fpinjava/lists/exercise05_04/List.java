@@ -92,13 +92,15 @@ public abstract class List<A> {
 
     @Override
     public List<A> drop(int n) {
-      return drop_(n, this);
+      return n <= 0
+              ? this
+              : drop_(this, n).eval();
     }
 
-    public List<A> drop_(int n, List<A> l) {
-      return n > 0 && !l.isEmpty()
-              ? drop_(--n, l.tail())
-              : l;
+    private TailCall<List<A>> drop_(List<A> list, int n) {
+      return n > 0 && !list.isEmpty()
+              ? sus(() -> drop_(list.tail(), n - 1))
+              : ret(list);
     }
   }
 
