@@ -56,7 +56,7 @@ public abstract class List<A> {
 
     @Override
     public List<A> dropWhile(Function<A, Boolean> f) {
-      throw new RuntimeException("To be implemented");
+      return this;
     }
   }
 
@@ -112,8 +112,16 @@ public abstract class List<A> {
 
     @Override
     public List<A> dropWhile(Function<A, Boolean> f) {
-      throw new RuntimeException("To be implemented");
+      return dropWhile_(f, this);
     }
+
+    //list(1, 2, 3).dropWhile(x -> x < 3)
+    public List<A> dropWhile_(Function<A, Boolean> f, List<A> l) {
+      return !l.isEmpty() && f.apply(l.head())
+              ? dropWhile_(f, l.tail())
+              : l;
+    }
+
   }
 
   @SuppressWarnings("unchecked")
