@@ -112,14 +112,14 @@ public abstract class List<A> {
 
     @Override
     public List<A> dropWhile(Function<A, Boolean> f) {
-      return dropWhile_(f, this);
+      return dropWhile_(f, this).eval();
     }
 
     //list(1, 2, 3).dropWhile(x -> x < 3)
-    public List<A> dropWhile_(Function<A, Boolean> f, List<A> l) {
+    public TailCall<List<A>> dropWhile_(Function<A, Boolean> f, List<A> l) {
       return !l.isEmpty() && f.apply(l.head())
-              ? dropWhile_(f, l.tail())
-              : l;
+              ? TailCall.sus(() -> dropWhile_(f, l.tail()))
+              : TailCall.ret(l);
     }
 
   }
