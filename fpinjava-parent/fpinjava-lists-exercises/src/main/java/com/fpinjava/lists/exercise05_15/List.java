@@ -201,6 +201,7 @@ public abstract class List<A> {
   }
 
   public static <A> List<A> concat(List<A> list1, List<A> list2) {
-    throw new IllegalStateException("To be implemented");
+    Function<A, Function<List<A>, List<A>>> f;
+    return foldRight(list1, list2, a -> b -> b.cons(a));
   }
 }
