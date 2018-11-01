@@ -205,6 +205,7 @@ public abstract class List<A> {
   }
 
   public static <A> List<A> flatten(List<List<A>> list) {
-    throw new IllegalStateException("To be implemented");
+    Function<List<A>, Function<List<A>, List<A>>> f = a -> b -> concat(a, b);
+    return foldRight(list, list(), f);
   }
 }
