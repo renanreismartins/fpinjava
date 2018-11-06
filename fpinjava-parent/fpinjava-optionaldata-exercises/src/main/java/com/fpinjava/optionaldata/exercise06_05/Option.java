@@ -20,10 +20,14 @@ public abstract class Option<A> {
   }
 
   public Option<A> orElse(Supplier<Option<A>> defaultValue) {
-    throw new IllegalStateException("Not implemented yet");
+    return map(a -> this).getOrElse(defaultValue);
   }
 
   private static class None<A> extends Option<A> {
+
+    public Option<A> orElse(Supplier<Option<A>> defaultValue) {
+      return defaultValue.get();
+    }
 
     private None() {}
 
