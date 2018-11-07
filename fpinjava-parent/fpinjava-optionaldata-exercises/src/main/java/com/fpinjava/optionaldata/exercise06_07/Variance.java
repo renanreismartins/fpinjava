@@ -3,17 +3,34 @@ package com.fpinjava.optionaldata.exercise06_07;
 
 import com.fpinjava.common.Function;
 import com.fpinjava.common.List;
-import com.fpinjava.common.TailCall;
 import com.fpinjava.optionaldata.exercise06_06.Option;
 
-import static com.fpinjava.common.TailCall.*;
 
 public class Variance {
 
-  static Function<List<Double>, Double> sum = null; // Implement this function
+    static Function<List<Double>, Double> sum =
+            ds -> ds.foldLeft(0.0, a -> b -> a + b);
 
-  static Function<List<Double>, Option<Double>> mean = null; // Implement this function
+    static Function<List<Double>, Option<Double>> mean =
+            ds -> ds.isEmpty()
+                    ? Option.none()
+                    : Option.some(sum.apply(ds) / ds.length());
 
-  static Function<List<Double>, Option<Double>> variance = null; // Implement this function
+    // 1st version - step by step
+//  static Function<List<Double>, Option<Double>> variance = new Function<List<Double>, Option<Double>>() {
+//    @Override
+//    public Option<Double> apply(List<Double> l) {
+//      Option<Double> maybeValuesMean = Variance.mean.apply(l);
+//      Option<List<Double>> maybeValuesVariance = maybeValuesMean.map(m -> l.map(x -> Math.pow(x - m, 2)));
+//      Option<Double> variance = maybeValuesVariance.flatMap(valuesVariance -> mean.apply(valuesVariance));
+//
+//      return variance;
+//    }
+//  };
+
+    // let intellij do it's job
+    static Function<List<Double>, Option<Double>> variance = l -> mean.apply(l)
+                                                                      .map(m -> l.map(x -> Math.pow(x - m, 2)))
+                                                                      .flatMap(valuesVariance -> mean.apply(valuesVariance));
 }
 
