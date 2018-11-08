@@ -91,6 +91,13 @@ public abstract class Option<A> {
   }
 
   public static <A, B> Function<Option<A>, Option<B>> lift(Function<A, B> f) {
-    return a -> a.map(b -> f.apply(b));
+    //return a -> a.map(b -> f.apply(b));
+
+    return new Function<Option<A>, Option<B>>() {
+      @Override
+      public Option<B> apply(Option<A> a) {
+        return a.map(f);
+      }
+    };
   }
 }
