@@ -26,11 +26,8 @@ public class OptionTest {
     assertEquals("None", Option.sequence(list.map(parse8)).toString());
   }
 
-  public static <A> Option<List<A>> sequence2(List<Option<A>> list) {
-    return list.isEmpty()
-            ? some(list())
-            : list.head()
-                  .flatMap(hh -> sequence2(list.tail()).map(x -> x.cons(hh)));
+  public static <A> Option<List<A>> sequenceAfterTheBoard(List<Option<A>> list) {
+    return list.foldRight(some(list()), optA -> optListA -> optA.flatMap(a -> optListA.map(l -> l.cons(a))));
   }
 
   @Test
