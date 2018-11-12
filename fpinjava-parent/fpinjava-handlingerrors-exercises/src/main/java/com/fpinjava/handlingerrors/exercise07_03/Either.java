@@ -12,7 +12,9 @@ public abstract class Either<E, A> {
 
   public abstract A getOrElse(Supplier<A> defaultValue);
 
-  public abstract Either<E, A> orElse(Supplier<Either<E, A>> defaultValue);
+  public Either<E, A> orElse(Supplier<Either<E, A>> defaultValue) {
+    return map(x -> this).getOrElse(defaultValue);
+  }
 
   private static class Left<E, A> extends Either<E, A> {
 
@@ -32,11 +34,6 @@ public abstract class Either<E, A> {
 
     @Override
     public A getOrElse(Supplier<A> defaultValue) {
-      return defaultValue.get();
-    }
-
-    @Override
-    public Either<E, A> orElse(Supplier<Either<E, A>> defaultValue) {
       return defaultValue.get();
     }
 
@@ -67,10 +64,6 @@ public abstract class Either<E, A> {
       return value;
     }
 
-    @Override
-    public Either<E, A> orElse(Supplier<Either<E, A>> defaultValue) {
-      return this;
-    }
 
     @Override
     public String toString() {
