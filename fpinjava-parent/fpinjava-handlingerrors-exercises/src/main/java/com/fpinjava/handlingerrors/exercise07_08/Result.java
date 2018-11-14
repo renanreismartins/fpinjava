@@ -245,7 +245,7 @@ public abstract class Result<T> implements Serializable {
     try {
       return predicate.apply(value) ? success(value) : empty();
     } catch (Exception e) {
-      return failure(String.format("Exception while evaluating predicate: %s", value));
+      return failure(new IllegalStateException(String.format("Exception while evaluating predicate: %s", value)));
     }
   }
 
@@ -253,7 +253,7 @@ public abstract class Result<T> implements Serializable {
     try {
       return predicate.apply(value) ? success(value) : failure(message);
     } catch (Exception e) {
-      return failure(String.format("Exception while evaluating predicate: %s", message));
+      return failure(new IllegalStateException(String.format("Exception while evaluating predicate: %s", message)));
     }
   }
 }
