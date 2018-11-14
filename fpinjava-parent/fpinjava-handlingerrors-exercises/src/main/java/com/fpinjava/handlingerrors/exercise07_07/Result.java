@@ -117,7 +117,7 @@ public abstract class Result<T> implements Serializable {
 
     @Override
     public Result<T> mapFailure(String s) {
-      return failure(s);
+      return failure(new IllegalStateException(s, exception));
     }
   }
 
