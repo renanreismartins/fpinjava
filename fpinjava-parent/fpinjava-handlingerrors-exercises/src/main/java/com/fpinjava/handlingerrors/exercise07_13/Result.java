@@ -367,7 +367,19 @@ public abstract class Result<T> implements Serializable {
   }
 
   public static <A, B, C> Function<Result<A>, Function<Result<B>, Result<C>>> lift2(Function<A, Function<B, C>> f) {
-    throw new RuntimeException("To be implemented");
+    return new Function<Result<A>, Function<Result<B>, Result<C>>>() {
+      @Override
+      public Function<Result<B>, Result<C>> apply(Result<A> rA) {
+        return new Function<Result<B>, Result<C>>() {
+          @Override
+          public Result<C> apply(Result<B> rB) {
+            Result<C> cResult = rA.map(a -> f.apply(a)).flatMap(f -> rB.map(b -> f.apply(b)));
+            return cResult;
+          }
+        };
+      }
+    };
+    //return rA -> rB -> rA.flatMap(a -> f.apply(a));
   }
 
   public static <A, B, C, D> Function<Result<A>, Function<Result<B>, Function<Result<C>, Result<D>>>> lift3(Function<A, Function<B, Function<C, D>>> f) {
