@@ -367,22 +367,30 @@ public abstract class Result<T> implements Serializable {
   }
 
   public static <A, B, C> Function<Result<A>, Function<Result<B>, Result<C>>> lift2(Function<A, Function<B, C>> f) {
-    return new Function<Result<A>, Function<Result<B>, Result<C>>>() {
+    return rA -> rB -> rA.map(a -> f.apply(a)).flatMap(raF -> rB.map(b -> raF.apply(b)));
+  }
+
+  public static <A, B, C, D> Function<Result<A>, Function<Result<B>, Function<Result<C>, Result<D>>>> lift3(Function<A, Function<B, Function<C, D>>> f) {
+    //return rA -> rB -> rC -> rA.map(a -> f.apply(a)).flatMap(raF -> lift2(raF));
+
+    return new Function<Result<A>, Function<Result<B>, Function<Result<C>, Result<D>>>>() {
       @Override
-      public Function<Result<B>, Result<C>> apply(Result<A> rA) {
-        return new Function<Result<B>, Result<C>>() {
+      public Function<Result<B>, Function<Result<C>, Result<D>>> apply(Result<A> rA) {
+        return new Function<Result<B>, Function<Result<C>, Result<D>>>() {
           @Override
-          public Result<C> apply(Result<B> rB) {
-            Result<C> cResult = rA.map(a -> f.apply(a)).flatMap(f -> rB.map(b -> f.apply(b)));
-            return cResult;
+          public Function<Result<C>, Result<D>> apply(Result<B> rB) {
+            return new Function<Result<C>, Result<D>>() {
+              @Override
+              public Result<D> apply(Result<C> rC) {
+                Result<Function<B, Function<C, D>>> map = rA.map(a -> f.apply(a));
+                Result<Function<Result<B>, Function<Result<C>, Result<D>>>> map1 = map.map((Function<B, Function<C, D>> raF) -> lift2(raF));
+                Result<D> dResult = map1.flatMap(x -> x.apply(rB).apply(rC));
+                return dResult;
+              }
+            };
           }
         };
       }
     };
-    //return rA -> rB -> rA.flatMap(a -> f.apply(a));
-  }
-
-  public static <A, B, C, D> Function<Result<A>, Function<Result<B>, Function<Result<C>, Result<D>>>> lift3(Function<A, Function<B, Function<C, D>>> f) {
-    throw new RuntimeException("To be implemented");
   }
 }
