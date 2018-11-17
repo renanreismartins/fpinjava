@@ -367,30 +367,18 @@ public abstract class Result<T> implements Serializable {
   }
 
   public static <A, B, C> Function<Result<A>, Function<Result<B>, Result<C>>> lift2(Function<A, Function<B, C>> f) {
-    return rA -> rB -> rA.map(a -> f.apply(a)).flatMap(raF -> rB.map(b -> raF.apply(b)));
+    return rA -> rB -> rA.map(f).flatMap(raF -> lift(raF).apply(rB));
   }
 
   public static <A, B, C, D> Function<Result<A>, Function<Result<B>, Function<Result<C>, Result<D>>>> lift3(Function<A, Function<B, Function<C, D>>> f) {
-    //return rA -> rB -> rC -> rA.map(a -> f.apply(a)).flatMap(raF -> lift2(raF));
+    return rA -> rB -> rC -> rA.map(f).flatMap(raF -> rB.map(rbF -> raF.apply(rbF))).flatMap(rcF -> rC.map(c -> rcF.apply(c)));
 
-    return new Function<Result<A>, Function<Result<B>, Function<Result<C>, Result<D>>>>() {
-      @Override
-      public Function<Result<B>, Function<Result<C>, Result<D>>> apply(Result<A> rA) {
-        return new Function<Result<B>, Function<Result<C>, Result<D>>>() {
-          @Override
-          public Function<Result<C>, Result<D>> apply(Result<B> rB) {
-            return new Function<Result<C>, Result<D>>() {
-              @Override
-              public Result<D> apply(Result<C> rC) {
-                Result<Function<B, Function<C, D>>> map = rA.map(a -> f.apply(a));
-                Result<Function<Result<B>, Function<Result<C>, Result<D>>>> map1 = map.map((Function<B, Function<C, D>> raF) -> lift2(raF));
-                Result<D> dResult = map1.flatMap(x -> x.apply(rB).apply(rC));
-                return dResult;
-              }
-            };
-          }
-        };
-      }
-    };
+
+//    return rA -> rB -> rC -> {
+//      Result<Function<B, Function<C, D>>> map = rA.map(f);
+//      Result<Function<Result<B>, Function<Result<C>, Result<D>>>> map1 = map.map((Function<B, Function<C, D>> raF) -> lift2(raF));
+//      Result<D> dResult = map1.flatMap(x -> x.apply(rB).apply(rC));
+//      return dResult;
+//    };
   }
 }
