@@ -371,14 +371,6 @@ public abstract class Result<T> implements Serializable {
   }
 
   public static <A, B, C, D> Function<Result<A>, Function<Result<B>, Function<Result<C>, Result<D>>>> lift3(Function<A, Function<B, Function<C, D>>> f) {
-    return rA -> rB -> rC -> rA.map(f).flatMap(raF -> rB.map(rbF -> raF.apply(rbF))).flatMap(rcF -> rC.map(c -> rcF.apply(c)));
-
-
-//    return rA -> rB -> rC -> {
-//      Result<Function<B, Function<C, D>>> map = rA.map(f);
-//      Result<Function<Result<B>, Function<Result<C>, Result<D>>>> map1 = map.map((Function<B, Function<C, D>> raF) -> lift2(raF));
-//      Result<D> dResult = map1.flatMap(x -> x.apply(rB).apply(rC));
-//      return dResult;
-//    };
+    return rA -> rB -> rC -> rA.map(f).flatMap(raF -> lift2(raF).apply(rB).apply(rC));
   }
 }
