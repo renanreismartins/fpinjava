@@ -268,6 +268,7 @@ public abstract class List<A> {
   }
 
   public static <A> List<A> flattenResult(List<Result<A>> list) {
-    throw new IllegalStateException("To be implemented");
+    return flatten(foldRight(list, List.<List<A>>list(),
+                             (Result<A> rA) -> (List<List<A>> acc) -> acc.cons(rA.map(a -> list(a)).getOrElse(list()))));
   }
 }
