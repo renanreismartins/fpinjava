@@ -273,6 +273,8 @@ public abstract class List<A> {
 
   public static <A> Result<List<A>> sequence(List<Result<A>> list) {
     //return foldRight(list, Result.success(list()), rA -> rLA -> rLA.map(lA -> concat(rA.map(a -> list(a)).getOrElse(list()), lA))); // WRONG!!
-    return foldRight(list, Result.success(list()), rA -> rLA -> rA.flatMap(a -> rLA.map(lA -> concat(list(a), lA))));
+
+    //return foldRight(list, Result.success(list()), rA -> rLA -> rA.flatMap(a -> rLA.map(lA -> concat(list(a), lA))));
+    return foldRight(list, Result.success(list()), rA -> rLA -> Result.map2(rA, rLA, a -> lA -> concat(list(a), lA)));
   }
 }
