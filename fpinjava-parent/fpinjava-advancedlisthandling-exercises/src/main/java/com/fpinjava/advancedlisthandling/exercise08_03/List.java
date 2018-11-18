@@ -28,7 +28,7 @@ public abstract class List<A> {
   public abstract Result<A> headOption();
 
   public Result<A> lastOption() {
-    throw new IllegalStateException("To be implemented");
+    return reverse().headOption();
   }
 
   public List<A> cons(A a) {
