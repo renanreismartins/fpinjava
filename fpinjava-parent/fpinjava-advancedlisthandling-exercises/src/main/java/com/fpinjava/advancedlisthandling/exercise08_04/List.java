@@ -31,7 +31,7 @@ public abstract class List<A> {
   }
 
   public Result<A> headOption() {
-    throw new IllegalStateException("to be implemented");
+    return isEmpty() ?  Result.empty() : Result.success(head());
   }
 
   public List<A> cons(A a) {
