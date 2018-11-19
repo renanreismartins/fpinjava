@@ -280,6 +280,19 @@ public abstract class List<A> {
   }
 
   public static <A, B, C> List<C> zipWith(List<A> list1, List<B> list2, Function<A, Function<B, C>> f) {
-    throw new IllegalStateException("To be implemented");
+      return zipWith_(list1, list2, list(), f);
+  }
+
+  private static <A, B> boolean smallerListIsEmpty(List<A> l1, List<B> l2) {
+    List<?> smaller = l1.length() > l2.length() ? l2 : l1;
+    return smaller.isEmpty();
+  }
+
+  public static <A, B, C> List<C> zipWith_(List<A> list1, List<B> list2, List<C> list3, Function<A, Function<B, C>> f) {
+    if (smallerListIsEmpty(list1, list2)) {
+      return list3;
+    } else {
+      return zipWith_(list1.tail(), list2.tail(), concat(list3, list(f.apply(list1.head()).apply(list2.head()))), f);
+    }
   }
 }
