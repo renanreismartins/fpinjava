@@ -276,11 +276,11 @@ public abstract class List<A> {
   }
 
   public static <A, B> Result<List<B>> traverse(List<A> list, Function<A, Result<B>> f) {
-    throw new IllegalStateException("To be implemented");
+    return foldRight(list, Result.success(list()), (A a) -> (Result<List<B>> rLA) -> f.apply(a).flatMap(x -> rLA.map(lA -> concat(list(x), lA))));
   }
 
   public static <A> Result<List<A>> sequence(List<Result<A>> list) {
-    throw new IllegalStateException("To be implemented");
+    return traverse(list, a -> a);
   }
 
 }
