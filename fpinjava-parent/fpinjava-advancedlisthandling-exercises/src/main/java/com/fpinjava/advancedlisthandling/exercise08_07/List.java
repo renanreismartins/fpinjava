@@ -276,7 +276,7 @@ public abstract class List<A> {
   }
 
   public static <A, B> Result<List<B>> traverse(List<A> list, Function<A, Result<B>> f) {
-    return foldRight(list, Result.success(list()), (A a) -> (Result<List<B>> rLA) -> f.apply(a).flatMap(x -> rLA.map(lA -> concat(list(x), lA))));
+    return foldRight(list, Result.success(list()), (A a) -> (Result<List<B>> rlB) -> f.apply(a).flatMap(b -> rlB.map(lB -> concat(list(b), lB))));
   }
 
   public static <A> Result<List<A>> sequence(List<Result<A>> list) {
