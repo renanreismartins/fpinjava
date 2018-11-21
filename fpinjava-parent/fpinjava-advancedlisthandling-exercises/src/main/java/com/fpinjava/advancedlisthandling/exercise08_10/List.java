@@ -297,7 +297,7 @@ public abstract class List<A> {
   }
 
   public static <A1, A2> Tuple<List<A1>, List<A2>> unzip(List<Tuple<A1, A2>> list) {
-    throw new IllegalStateException("To be implemented");
+    return foldRight(list, new Tuple<>(list(), list()), t -> acc -> new Tuple<>(acc._1.cons(t._1), acc._2.cons(t._2)));
   }
 
 }
