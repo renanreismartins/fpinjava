@@ -46,7 +46,19 @@ public abstract class List<A> {
   }
 
   public Result<A> getAt(int index) {
-    throw new IllegalStateException("To be implemented");
+    return getAt(index, this);
+  }
+
+  private Result<A> getAt(int index, List<A> l) {
+    if (l.isEmpty()) {
+      return Result.failure("Index out of bound");
+    }
+
+    if (index == 0) {
+      return Result.success(l.head());
+    } else {
+      return getAt(--index, l.tail());
+    }
   }
 
   @SuppressWarnings("rawtypes")
