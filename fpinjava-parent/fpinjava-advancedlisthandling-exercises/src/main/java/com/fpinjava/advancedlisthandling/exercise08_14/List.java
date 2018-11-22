@@ -122,15 +122,15 @@ public abstract class List<A> {
       return new Tuple<>(this, list());
     }
 
-    return splitAt_(index, this, list(), list());
+    return splitAt_(index, this, list());
 
   }
 
-  private Tuple<List<A>, List<A>> splitAt_(int index, List<A> original, List<A> l1, List<A> l2) {
+  private Tuple<List<A>, List<A>> splitAt_(int index, List<A> l1, List<A> l2) {
     if (index == 0) {
-      return new Tuple<>(l1, l2);
+      return new Tuple<>(l2, l1);
     } else {
-      return splitAt_(--index, original.tail(), concat(l1, list(original.head())), original.tail());
+      return splitAt_(--index, l1.tail(), concat(l2, list(l1.head())));
     }
   }
 
