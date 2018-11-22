@@ -110,8 +110,28 @@ public abstract class List<A> {
     return rt._1;
   }
 
+
+  // maybe using a combination of functions? Reverse, drop?
   public Tuple<List<A>, List<A>> splitAt(int index) {
-    throw new IllegalStateException("To be implemented");
+
+    if (index <= 0) {
+      return new Tuple<>(list(), this);
+    }
+
+    if (index >= length()) {
+      return new Tuple<>(this, list());
+    }
+
+    return splitAt_(index, this, list(), list());
+
+  }
+
+  private Tuple<List<A>, List<A>> splitAt_(int index, List<A> original, List<A> l1, List<A> l2) {
+    if (index == 0) {
+      return new Tuple<>(l1, l2);
+    } else {
+      return splitAt_(--index, original.tail(), concat(l1, list(original.head())), original.tail());
+    }
   }
 
   @SuppressWarnings("rawtypes")
