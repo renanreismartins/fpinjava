@@ -125,7 +125,15 @@ public abstract class List<A> {
   }
 
   public Tuple<List<A>, List<A>> splitAt__(int index) {
-    throw new IllegalStateException("To be implemented");
+    Tuple<Integer, Tuple<List<A>, List<A>>> result = foldLeft(new Tuple<>(0, new Tuple<>(list(), list())), tIntTlistlist -> a -> {
+      if (index <= tIntTlistlist._1) {
+        return new Tuple<>(tIntTlistlist._1 + 1, new Tuple<>(tIntTlistlist._2._1, tIntTlistlist._2._2.cons(a)));
+      } else {
+        return new Tuple<>(tIntTlistlist._1 + 1, new Tuple<>(tIntTlistlist._2._1.cons(a), tIntTlistlist._2._2));
+      }
+    });
+
+    return new Tuple<>(result._2._1.reverse(), result._2._2.reverse());
   }
 
   @SuppressWarnings("rawtypes")
