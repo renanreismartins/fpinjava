@@ -16,5 +16,6 @@ public class ListTest {
     assertTrue(List.hasSubList(List.list(1, 2, 3, 4, 5, 6), List.list(3, 4, 5, 6)));
     assertTrue(List.hasSubList(List.list(1, 2, 1, 4, 5, 6), List.list(1, 4, 5, 6)));
     assertTrue(List.hasSubList(List.list(1, 2, 1, 2, 1, 4), List.list(1, 2, 1, 4)));
+    assertFalse(List.hasSubList(List.list(), List.list(1, 3, 4)));
   }
 }

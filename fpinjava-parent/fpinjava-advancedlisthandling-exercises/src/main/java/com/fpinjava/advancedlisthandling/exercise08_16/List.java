@@ -468,10 +468,10 @@ public abstract class List<A> {
         return true;
       }
 
-      if (!list.isEmpty()) {
-        return hasSubList(list.tail(), sub);
-      } else {
+      if (list.isEmpty()) {
         return false;
+      } else {
+        return hasSubList(list.tail(), sub);
       }
   }
 
