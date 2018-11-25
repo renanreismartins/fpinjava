@@ -464,10 +464,30 @@ public abstract class List<A> {
   }
 
   public static <A> boolean hasSubList(List<A> list, List<A> sub) {
-    throw new IllegalStateException("To be implemented");
+      if (startsWith(list, sub)) {
+        return true;
+      }
+
+      if (!list.isEmpty()) {
+        return hasSubList(list.tail(), sub);
+      } else {
+        return false;
+      }
   }
 
   public static <A> Boolean startsWith(List<A> list, List<A> sub) {
-    throw new IllegalStateException("To be implemented");
+    if (sub.isEmpty()) {
+      return true;
+    }
+
+    if (list.isEmpty()) {
+      return false;
+    }
+
+    if (list.head().equals(sub.head())) {
+      return startsWith(list.tail(), sub.tail());
+    } else {
+      return false;
+    }
   }
 }
