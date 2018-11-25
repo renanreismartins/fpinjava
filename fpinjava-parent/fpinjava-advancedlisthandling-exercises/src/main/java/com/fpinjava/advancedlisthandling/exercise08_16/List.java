@@ -464,12 +464,12 @@ public abstract class List<A> {
   }
 
   public static <A> boolean hasSubList(List<A> list, List<A> sub) {
-      if (startsWith(list, sub)) {
-        return true;
-      }
-
       if (list.isEmpty()) {
         return false;
+      }
+
+      if (startsWith(list, sub)) {
+        return true;
       } else {
         return hasSubList(list.tail(), sub);
       }
