@@ -198,7 +198,10 @@ public abstract class List<A> {
   }
 
   public <B> Map<B, List<A>> groupBy(Function<A, B> f) {
-    throw new IllegalStateException("To be implemented");
+    return foldLeft(Map.empty(), acc -> e -> {
+      B key = f.apply(e);
+      return acc.put(key, acc.get(key).getOrElse(list()).cons(e));
+    });
   }
 
   @SuppressWarnings("rawtypes")
