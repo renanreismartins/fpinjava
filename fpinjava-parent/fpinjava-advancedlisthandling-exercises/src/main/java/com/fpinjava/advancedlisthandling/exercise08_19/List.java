@@ -527,7 +527,8 @@ public abstract class List<A> {
   }
 
   public static List<Integer> range(int start, int end) {
-    throw new IllegalStateException("To be implemented");
+    return unfold_(start, i -> i < end  ? Result.success(new Tuple<>(i, i + 1))
+            : Result.empty());
   }
 
 }
