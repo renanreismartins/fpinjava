@@ -203,7 +203,21 @@ public abstract class List<A> {
   }
 
   public boolean exists(Function<A, Boolean> p) {
-    throw new IllegalStateException("To be implemented");
+    return exists_(this, p);
+  }
+
+  public boolean exists_(List<A> l, Function<A, Boolean> p) {
+
+    if (l.isEmpty()) {
+      return false;
+    }
+
+    if (p.apply(l.head())) {
+      return true;
+    } else {
+      return exists_(l.tail(), p);
+    }
+
   }
 
   public <B> List<Tuple<Result<A>, Result<B>>> zipAll(List<B> s2) {
