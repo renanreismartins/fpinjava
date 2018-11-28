@@ -218,15 +218,15 @@ public abstract class List<A> {
   }
 
   public List<List<A>> divide(int depth) {
-    return divide_(new BigDecimal(depth), this);
+    return divide_(depth, this);
   }
 
-  private List<List<A>> divide_(BigDecimal depth, List<A> l) {
-    if (depth.equals(BigDecimal.ONE)) {
+  private List<List<A>> divide_(int depth, List<A> l) {
+    if (depth == 1 || l.isEmpty()) {
       return list(l);
     } else {
       List<List<A>> lists = l.splitListAt(l.length() / 2);
-      return lists.flatMap(le -> le.divide_(depth.subtract(BigDecimal.ONE), le));
+      return lists.flatMap(le -> le.divide_(depth / 2, le));
       }
   }
 
