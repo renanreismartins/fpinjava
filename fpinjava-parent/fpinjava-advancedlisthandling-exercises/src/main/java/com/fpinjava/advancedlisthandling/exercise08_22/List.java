@@ -7,6 +7,8 @@ import com.fpinjava.common.TailCall;
 import com.fpinjava.common.Tuple;
 import com.fpinjava.common.Tuple3;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Objects;
 
 import static com.fpinjava.common.TailCall.ret;
@@ -211,11 +213,21 @@ public abstract class List<A> {
   }
 
   public List<List<A>> splitListAt(int i) {
-    throw new IllegalStateException("To be implemented");
+    Tuple<List<A>, List<A>> t = splitAt(i);
+    return list(t._1, t._2);
   }
 
   public List<List<A>> divide(int depth) {
-    throw new IllegalStateException("To be implemented");
+    return divide_(new BigDecimal(depth), this);
+  }
+
+  private List<List<A>> divide_(BigDecimal depth, List<A> l) {
+    if (depth.equals(BigDecimal.ONE)) {
+      return list(l);
+    } else {
+      List<List<A>> lists = l.splitListAt(l.length() / 2);
+      return lists.flatMap(le -> le.divide_(depth.subtract(BigDecimal.ONE), le));
+      }
   }
 
   public <B> List<Tuple<Result<A>, Result<B>>> zipAll(List<B> s2) {
