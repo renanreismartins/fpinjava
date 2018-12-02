@@ -110,15 +110,18 @@ abstract class Stream<A> {
 
       @Override
       public Stream<A> take(int n) {
-          return take_(n, this, empty());
+        if (n == 1) {
+            return this;
+        } else {
+            return cons(head, tail().take(n - 1));
+        }
       }
 
       private Stream<A> take_(int n, Stream<A> s, Stream<A> acc) {
           if (n == 0 || s.isEmpty()) {
               return acc;
           } else {
-              return cons(() -> s.head(), take_(n - 1, s.tail(), acc));
-              //return take_(--n, s.tail(), cons(() -> s.head(), acc));
+              return take_(--n, s.tail(), cons(() -> s.head(), acc));
           }
       }
 
