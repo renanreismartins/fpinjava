@@ -74,7 +74,7 @@ abstract class Stream<A> {
 
     @Override
     public Stream<A> takeWhile(Function<A, Boolean> f) {
-      throw new IllegalStateException("To be implemented");
+      return empty();
     }
   }
 
@@ -130,7 +130,11 @@ abstract class Stream<A> {
 
     @Override
     public Stream<A> takeWhile(Function<A, Boolean> f) {
-      throw new IllegalStateException("To be implemented");
+      if (f.apply(head())) {
+        return cons(head, () -> tail().takeWhile(f));
+      } else {
+        return empty();
+      }
     }
 
     public TailCall<Stream<A>> drop(Stream<A> acc, int n) {
