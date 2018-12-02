@@ -118,6 +118,7 @@ abstract class Stream<A> {
               return acc;
           } else {
               return cons(() -> s.head(), take_(n - 1, s.tail(), acc));
+              //return take_(--n, s.tail(), cons(() -> s.head(), acc));
           }
       }
 
