@@ -29,7 +29,15 @@ abstract class Stream<A> {
   public abstract Stream<A> takeWhile(Function<A, Boolean> f);
 
   public Stream<A> dropWhile(Function<A, Boolean> f) {
-    throw new IllegalStateException("To be implemented");
+    return dropWhile_(f, this).eval();
+  }
+
+  private TailCall<Stream<A>> dropWhile_(Function<A, Boolean> f, Stream<A> s) {
+    if (!s.isEmpty() && f.apply(s.head())) {
+      return sus(() -> dropWhile_(f, s.tail()));
+    } else {
+      return ret(s);
+    }
   }
 
   public List<A> toList() {
