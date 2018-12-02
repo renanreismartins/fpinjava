@@ -110,10 +110,10 @@ abstract class Stream<A> {
 
       @Override
       public Stream<A> take(int n) {
-        if (n == 1) {
-            return this;
+        if (n == 0) {
+            return empty();
         } else {
-            return cons(head, tail().take(n - 1));
+            return cons(head, () -> tail().take(n - 1));
         }
       }
 
