@@ -105,7 +105,7 @@ abstract class Stream<A> {
 
     @Override
     public <B> B foldRight(Supplier<B> z, Function<A, Function<Supplier<B>, B>> f) {
-      throw new IllegalStateException("To be implemented");
+      return z.get();
     }
   }
 
