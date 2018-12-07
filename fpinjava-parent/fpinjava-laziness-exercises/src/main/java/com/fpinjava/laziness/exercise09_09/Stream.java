@@ -35,7 +35,8 @@ abstract class Stream<A> {
   }
 
   public Result<A> headOptionViaFoldRight() {
-    throw new IllegalStateException("To be implemented");
+    return foldRight(() -> headOption(), (A a) -> (Supplier<Result<A>> s) -> Result.success(a));
+    //return foldRight(() -> headOption(), (A a) -> (Supplier<Result<A>> s) -> s.get());
   }
 
   public Stream<A> takeWhile(Function<A, Boolean> f) {
