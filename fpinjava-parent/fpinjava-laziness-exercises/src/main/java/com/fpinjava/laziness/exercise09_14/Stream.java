@@ -31,7 +31,9 @@ abstract class Stream<A> {
   public abstract <B> B foldRight(Supplier<B> z, Function<A, Function<Supplier<B>, B>> f);
 
   public Result<A> find(Function<A, Boolean> p) {
-    throw new IllegalStateException("To be implemented");
+    //return foldRight(Result::empty, a -> acc -> p.apply(a) ? Result.success(a) : acc.get().isSuccess() ? acc.get() : Result.empty());
+
+    return filter(p).headOption();
   }
 
   public <B> Stream<B> flatMap(Function<A, Stream<B>> f) {
