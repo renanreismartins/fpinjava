@@ -38,7 +38,7 @@ public abstract class Tree<A extends Comparable<A>> {
 
     @Override
     public boolean member(A a) {
-      throw new IllegalStateException("To be implemented");
+      return false;
     }
 
     @Override
@@ -85,7 +85,8 @@ public abstract class Tree<A extends Comparable<A>> {
 
     @Override
     public boolean member(A value) {
-      throw new IllegalStateException("To be implemented");
+      if (value().equals(value)) return true;
+      return left().member(value) || right().member(value);
     }
 
     @Override
