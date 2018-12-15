@@ -162,7 +162,7 @@ public abstract class Tree<A extends Comparable<A>> {
       } else if (value.compareTo(a) > 0) {
         return new T(left.remove(a), value, right);
       } else {
-        Result<Tree<A>> leftMap = left.min().map(e -> new T(left.remove(e), e, right));
+        Result<Tree<A>> leftMap = left.max().map(e -> new T(left.remove(e), e, right));
         Supplier<Result<Tree<A>>> highestFromRightSide = () -> right.max().map(ex -> new T(left, ex, right.remove(ex)));
         return leftMap.orElse(highestFromRightSide).getOrElse(empty());
       }
