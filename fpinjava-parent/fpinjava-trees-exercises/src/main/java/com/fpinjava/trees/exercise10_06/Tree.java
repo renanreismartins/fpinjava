@@ -72,7 +72,7 @@ public abstract class Tree<A extends Comparable<A>> {
 
     @Override
     public Tree<A> remove(A a) {
-      throw new IllegalStateException("To be implemented");
+      return empty();
     }
 
     @Override
@@ -155,7 +155,34 @@ public abstract class Tree<A extends Comparable<A>> {
 
     @Override
     public Tree<A> remove(A a) {
-      throw new IllegalStateException("To be implemented");
+
+      if (value.compareTo(a) < 0) {
+        return new T(left, value, right.remove(a));
+      } else if (value.compareTo(a) > 0) {
+        return new T(left.remove(a), value, right);
+      } else {
+
+
+        // left will be executed anyway, understand why the compiler can do it in the supplier as commented bellow
+        //Result<Tree<A>> rightMap = right.min().map(e -> new T(left, e, right.remove(e)));
+        Result<Tree<A>> rightMap = right.max().map(ex -> new T(left, ex, right.remove(ex)));
+
+        Result<Tree<A>> leftMap = left.min().map(e -> new T(left.remove(e), e, right));
+
+        Tree<A> orElseOfRightMap = rightMap.getOrElse(() -> Tree.empty());
+
+        return leftMap.getOrElse(orElseOfRightMap);
+
+
+//        return right.min().map(e -> new T(left, e, right.remove(e)))
+//                    .getOrElse(() ->
+//                                       left.max().map(ex -> new T(left.remove(ex), ex, right))
+//                                           .getOrElse(() -> new T(Tree.empty(), 9, Tree.empty())));
+      }
+    }
+
+    private Tree<A> merge(Tree<A> tree) {
+      return null;
     }
 
     @Override
