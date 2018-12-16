@@ -24,6 +24,8 @@ public abstract class Tree<A extends Comparable<A>> {
   public abstract Tree<A> remove(A a);
   public abstract boolean isEmpty();
 
+  protected abstract Tree<A> removeMerge(Tree<A> ta);
+
   private static class Empty<A extends Comparable<A>> extends Tree<A> {
 
     @Override
@@ -79,6 +81,11 @@ public abstract class Tree<A extends Comparable<A>> {
     @Override
     public boolean isEmpty() {
       return true;
+    }
+
+    @Override
+    protected Tree<A> removeMerge(Tree<A> ta) {
+      return ta;
     }
 
     @Override
@@ -162,15 +169,42 @@ public abstract class Tree<A extends Comparable<A>> {
       } else if (value.compareTo(a) > 0) {
         return new T(left.remove(a), value, right);
       } else {
-        Result<Tree<A>> leftMap = left.max().map(e -> new T(left.remove(e), e, right));
-        Supplier<Result<Tree<A>>> highestFromRightSide = () -> right.max().map(ex -> new T(left, ex, right.remove(ex)));
-        return leftMap.orElse(highestFromRightSide).getOrElse(empty());
+//        Result<Tree<A>> leftMap = left.max().map(e -> new T(left.remove(e), e, right));
+//        Supplier<Result<Tree<A>>> highestFromRightSide = () -> right.max().map(ex -> new T(left, ex, right.remove(ex)));
+//        return leftMap.orElse(highestFromRightSide).getOrElse(empty());
+        return left.removeMerge(right);
       }
     }
+
 
     @Override
     public boolean isEmpty() {
       return false;
+    }
+
+    @Override
+    protected Tree<A> removeMerge(Tree<A> ta) {
+      if (ta.isEmpty()) {
+        return this;
+      } else if (value.compareTo(ta.value()) < 0) {
+
+//        return new T(left,
+//              value,
+//              new T(empty(), right.value(), ta));
+
+        return new T(left,
+                     value,
+                     right.removeMerge(ta));
+      } else {
+
+//        return new T(new T(ta, left.value(), empty()),
+//              value,
+//              right);
+
+        return new T(left.removeMerge(ta),
+                     value,
+                     right);
+      }
     }
 
     @Override
