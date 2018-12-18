@@ -190,7 +190,17 @@ public abstract class Tree<A extends Comparable<A>> {
 
     @Override
     public Tree<A> merge(Tree<A> a) {
-      throw new IllegalStateException("To be implemented");
+      if (a.isEmpty()) {
+        return this;
+      }
+      if (value.compareTo(a.value()) > 0) {
+        return new T<>(left.merge(new T<>(a.left(), a.value(), empty())), value, right).merge(a.right());
+      }
+      if (value.compareTo(a.value()) < 0) {
+        return new T<>(left, value, right.merge(new T<>(empty(), a.value(), a.right()))).merge(a.left());
+      }
+
+      return new T<>(left.merge(a.left()), value, right.merge(a.right()));
     }
 
     protected Tree<A> removeMerge(Tree<A> ta) {
