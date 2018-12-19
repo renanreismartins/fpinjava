@@ -224,13 +224,9 @@ public abstract class Tree<A extends Comparable<A>> {
 
     @Override
     public <B> B foldLeft(B identity, Function<B, Function<A, B>> f, Function<B, Function<B, B>> g) {
-      return foldLeft_(identity, this, f, g);
-    }
-
-    private <B> B foldLeft_(B identity, Tree<A> tree, Function<B, Function<A, B>> f, Function<B, Function<B, B>> g) {
-      B b = f.apply(identity).apply(tree.value());
-      B b1 = tree.left().foldLeft(b, f, g);
-      B b2 = tree.right().foldLeft(b1, f, g);
+      B b = f.apply(identity).apply(value);
+      B b1 = left().foldLeft(b, f, g);
+      B b2 = right().foldLeft(b1, f, g);
       return b2;
     }
 
