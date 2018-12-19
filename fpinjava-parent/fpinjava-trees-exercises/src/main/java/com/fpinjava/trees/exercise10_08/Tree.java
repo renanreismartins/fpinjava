@@ -104,7 +104,7 @@ public abstract class Tree<A extends Comparable<A>> {
 
     @Override
     public <B> B foldLeft(B identity, Function<B, Function<A, B>> f, Function<B, Function<B, B>> g) {
-      throw new IllegalStateException("To be implemented");
+      return identity;
     }
 
     @Override
@@ -224,7 +224,14 @@ public abstract class Tree<A extends Comparable<A>> {
 
     @Override
     public <B> B foldLeft(B identity, Function<B, Function<A, B>> f, Function<B, Function<B, B>> g) {
-      throw new IllegalStateException("To be implemented");
+      return foldLeft_(identity, this, f, g);
+    }
+
+    private <B> B foldLeft_(B identity, Tree<A> tree, Function<B, Function<A, B>> f, Function<B, Function<B, B>> g) {
+      B b = f.apply(identity).apply(tree.value());
+      B b1 = tree.left().foldLeft(b, f, g);
+      B b2 = tree.right().foldLeft(b1, f, g);
+      return b2;
     }
 
     @Override
