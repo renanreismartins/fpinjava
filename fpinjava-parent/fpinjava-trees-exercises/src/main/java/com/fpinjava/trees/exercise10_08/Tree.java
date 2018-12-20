@@ -225,8 +225,8 @@ public abstract class Tree<A extends Comparable<A>> {
     @Override
     public <B> B foldLeft(B identity, Function<B, Function<A, B>> f, Function<B, Function<B, B>> g) {
       B b = f.apply(identity).apply(value);
-      B b1 = left().foldLeft(b, f, g);
-      B b2 = right().foldLeft(b1, f, g);
+      B b1 = right().foldLeft(b, f, g);
+      B b2 = left().foldLeft(b1, f, g);
       return b2;
     }
 
