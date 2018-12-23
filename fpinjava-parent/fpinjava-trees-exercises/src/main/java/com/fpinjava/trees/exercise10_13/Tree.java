@@ -6,6 +6,8 @@ import com.fpinjava.common.List;
 import com.fpinjava.common.Result;
 import com.fpinjava.common.TailCall;
 
+import static com.fpinjava.common.List.list;
+
 public abstract class Tree<A extends Comparable<A>> {
 
   @SuppressWarnings("rawtypes")
@@ -123,7 +125,7 @@ public abstract class Tree<A extends Comparable<A>> {
 
     @Override
     public List<A> toListInOrderRight() {
-      throw new IllegalStateException("To be implemented");
+      return list();
     }
 
     @Override
@@ -285,7 +287,7 @@ public abstract class Tree<A extends Comparable<A>> {
 
     @Override
     public List<A> toListInOrderRight() {
-      throw new IllegalStateException("To be implemented");
+      return foldInOrder(list(), (List<A> l) -> (A e) -> (List<A> r) -> r.concat(l.cons(e)));
     }
 
     protected Tree<A> removeMerge(Tree<A> ta) {
@@ -363,7 +365,7 @@ public abstract class Tree<A extends Comparable<A>> {
 
   @SafeVarargs
   public static <A extends Comparable<A>> Tree<A> tree(A... as) {
-    return tree(List.list(as));
+    return tree(list(as));
   }
 
   public static <A extends Comparable<A>> boolean lt(A first, A second) {
