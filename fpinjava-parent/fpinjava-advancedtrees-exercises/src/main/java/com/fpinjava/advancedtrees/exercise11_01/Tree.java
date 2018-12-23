@@ -23,13 +23,16 @@ public abstract class Tree<A extends Comparable<A>> {
   protected abstract A value();
   public abstract int size();
   public abstract int height();
+  protected abstract Tree<A> ins(A value);
 
   protected static <A extends Comparable<A>> Tree<A> blacken(Tree<A> t) {
-    throw new IllegalStateException("To be implemented");
+    return t.isEmpty()
+            ? empty()
+            : new T<>(B, t.left(), t.value(), t.right());
   }
 
   public Tree<A> insert(A value) {
-    throw new IllegalStateException("To be implemented");
+    return blacken(ins(value));
   }
 
   private static class E<A extends Comparable<A>> extends Tree<A> {
@@ -88,6 +91,10 @@ public abstract class Tree<A extends Comparable<A>> {
     public String toString() {
       return "E";
     }
+
+    protected Tree<A> ins(A value) {
+      return new T<>(R, empty(), value, empty());
+    }
   }
 
   private static class T<A extends Comparable<A>> extends Tree<A> {
@@ -108,7 +115,47 @@ public abstract class Tree<A extends Comparable<A>> {
     }
 
     private Tree<A> balance(Color color, Tree<A> left, A value, Tree<A> right) {
-      throw new IllegalStateException("To be implemented");
+      if (color.isB() && left.isTR() && left.left().isTR()) {
+        return new T(R,
+                     new T(B, left.left().left(), left.left().value(), left.left().right()),
+                     left.value(),
+                     new T(B, left.right(), value, right));
+      }
+
+      if (color.isB() && left.isTR() && left.right().isTR()) {
+        return new T(R,
+                     new T(B, left.left(), left.value(), left.right().left()),
+                     left.right().value(),
+                     new T(B, left.right().right(), value, right));
+      }
+
+      if (color.isB() && right.isTR() && right.left().isTR()) {
+        return new T(R,
+                     new T<>(B, left, value, right.left().left()),
+                     right.left().value(),
+                     new T<>(B, right.left().right(), right.value(), right.right()));
+      }
+
+      if (color.isB() && right.isTR() && right.right().isTR()) {
+        return new T(R,
+                     new T(B, left, value, right.left()),
+                     right.value(),
+                     new T(B, right.right().left(), right.right().value(), right.right().right()));
+      }
+
+      return new T<>(color, left, value, right);
+    }
+
+    protected Tree<A> ins(A value) {
+      if (this.value.compareTo(value) > 0) {
+        return balance(this.color, left.ins(value), this.value, right);
+      }
+
+      if (this.value.compareTo(value) < 0) {
+        return balance(this.color, left, this.value, right.ins(value));
+      } else {
+        return this;
+      }
     }
 
     @Override
