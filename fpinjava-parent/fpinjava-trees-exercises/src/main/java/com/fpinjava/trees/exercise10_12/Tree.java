@@ -322,7 +322,12 @@ public abstract class Tree<A extends Comparable<A>> {
 
     @Override
     protected Tree<A> rotateLeft() {
-      throw new IllegalStateException("To be implemented");
+      if (right.isEmpty()) {
+        return this;
+      }
+
+      return new T(new T(left, value, right.left()), right.value(), right.right());
+
     }
 
     @Override
