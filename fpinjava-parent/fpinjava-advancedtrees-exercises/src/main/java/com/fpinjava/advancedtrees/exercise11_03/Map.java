@@ -49,7 +49,10 @@ public class Map<K extends Comparable<K>, V> {
   }
 
   public List<V> values() {
-    throw new IllegalStateException("To be implemented");
+    return delegate.foldInOrder(List.list(),
+                                acc -> entry -> aList -> entry.value.map(e -> acc.cons(e))
+                                                             .getOrElse(acc)
+                                                             .concat(aList));
   }
 
   public static <K extends Comparable<K>, V> Map<K, V> empty() {
