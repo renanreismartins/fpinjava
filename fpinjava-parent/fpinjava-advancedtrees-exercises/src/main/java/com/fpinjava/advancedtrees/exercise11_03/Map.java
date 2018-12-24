@@ -6,6 +6,7 @@ import com.fpinjava.common.List;
 import com.fpinjava.common.Result;
 
 import static com.fpinjava.advancedtrees.exercise11_03.MapEntry.mapEntry;
+import static com.fpinjava.common.List.list;
 
 
 public class Map<K extends Comparable<K>, V> {
@@ -49,8 +50,8 @@ public class Map<K extends Comparable<K>, V> {
   }
 
   public List<V> values() {
-    return delegate.foldInOrder(List.list(),
-                                acc -> entry -> aList -> entry.value.map(e -> acc.cons(e))
+    return delegate.foldInOrder(list(),
+                                acc -> entry -> aList -> entry.value.map(e -> acc.concat(list(e)))
                                                              .getOrElse(acc)
                                                              .concat(aList));
   }
