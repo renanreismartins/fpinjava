@@ -1,12 +1,11 @@
 package com.fpinjava.advancedtrees.exercise11_05;
 
-import static org.junit.Assert.*;
 
 import com.fpinjava.common.List;
-import com.fpinjava.common.Result;
 import org.junit.Assert;
 import org.junit.Test;
-import static org.junit.Assert.assertEquals;
+
+import static com.fpinjava.advancedtrees.exercise11_05.Heap.empty;
 
 
 public class HeapTest {
@@ -23,5 +22,11 @@ public class HeapTest {
     List<Integer> list = List.list(7, 3, 1, 6, 4, 6, 2);
     Heap<Integer> queue = list.foldLeft(Heap.<Integer>empty(), h -> h::add);
     queue.head().map(a -> a == 1).forEachOrThrow(Assert::assertTrue);
+  }
+
+  @Test
+  public void addTwoElements() {
+    //this was just for debuggability and evaluation
+    Heap.<Integer>empty().add(0).add(1);
   }
 }

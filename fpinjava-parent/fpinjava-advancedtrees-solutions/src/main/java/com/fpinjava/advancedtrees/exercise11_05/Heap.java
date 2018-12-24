@@ -137,7 +137,7 @@ public abstract class Heap<A extends Comparable<A>> {
 
   public static <A extends Comparable<A>> Heap<A> merge(Heap<A> first, Heap<A> second) {
     return first.head().flatMap(fh -> second.head().flatMap(sh -> fh.compareTo(sh) <= 0
-        ? first.left().flatMap(fl -> first.right().map(fr -> heap(fh, fl, merge(fr, second))))
+        ? first.left().flatMap(fl -> first.right().map(fr -> heap(fh, fl, merge(fr, second)))) // first.left() returns a Success(empty())
         : second.left().flatMap(sl -> second.right().map(sr -> heap(sh, sl, merge(first, sr))))))
         .getOrElse(first.isEmpty()
             ? second
