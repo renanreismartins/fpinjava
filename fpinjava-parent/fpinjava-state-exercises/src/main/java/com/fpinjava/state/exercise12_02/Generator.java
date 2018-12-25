@@ -20,7 +20,11 @@ public class Generator {
   public static Tuple<List<Integer>, RNG> integers(RNG rng, int length) {
     //List<Integer> range = List.range(0, length);
 
-    Tuple<Integer, RNG> t = rng.nextInt();
-    return new Tuple<>(List.list(t._1), t._2);
+
+    return new Tuple<>(List.list(), rng);
+
+    // length 1
+    //Tuple<Integer, RNG> t = rng.nextInt();
+    //return new Tuple<>(List.list(t._1), t._2);
   }
 }
