@@ -20,7 +20,7 @@ public class Generator {
   public static Tuple<List<Integer>, RNG> integers(RNG rng, int length) {
     return List.range(0, length)
                .foldLeft(new Tuple<>(List.list(), rng), acc -> e -> {
-                 Tuple<Integer, RNG> t = acc._2.nextInt();
+                 Tuple<Integer, RNG> t = integer(acc._2);
                  return new Tuple<>(acc._1.cons(t._1), t._2);
                });
   }
