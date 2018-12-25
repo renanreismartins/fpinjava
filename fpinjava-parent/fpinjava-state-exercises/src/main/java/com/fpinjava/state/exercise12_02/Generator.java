@@ -4,6 +4,8 @@ package com.fpinjava.state.exercise12_02;
 import com.fpinjava.common.List;
 import com.fpinjava.common.Tuple;
 
+import static com.fpinjava.common.CollectionUtilities.list;
+
 public class Generator {
 
   public static Tuple<Integer, RNG> integer(RNG rng) {
@@ -16,6 +18,9 @@ public class Generator {
   }
 
   public static Tuple<List<Integer>, RNG> integers(RNG rng, int length) {
-    throw new IllegalStateException("To be implemented");
+    //List<Integer> range = List.range(0, length);
+
+    Tuple<Integer, RNG> t = rng.nextInt();
+    return new Tuple<>(List.list(t._1), t._2);
   }
 }
