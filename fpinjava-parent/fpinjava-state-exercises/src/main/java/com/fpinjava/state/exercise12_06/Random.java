@@ -3,6 +3,7 @@ package com.fpinjava.state.exercise12_06;
 
 import com.fpinjava.common.Function;
 import com.fpinjava.common.List;
+import com.fpinjava.common.Supplier;
 import com.fpinjava.common.Tuple;
 
 public interface Random<A> extends Function<RNG, Tuple<A, RNG>> {
@@ -27,7 +28,7 @@ public interface Random<A> extends Function<RNG, Tuple<A, RNG>> {
   }
 
   static <A> Random<List<A>> sequence(List<Random<A>> rs) {
-    throw new IllegalStateException("To be implemented");
+    return rs.foldRight(unit(List.list()), e -> acc -> map2(e, acc, a -> b -> b.cons(a)));
   }
 
   Random<Integer> intRnd = RNG::nextInt;
@@ -38,5 +39,5 @@ public interface Random<A> extends Function<RNG, Tuple<A, RNG>> {
 
   Random<Tuple<Integer, Integer>> intPairRnd = map2(intRnd, intRnd, x -> y -> new Tuple<>(x, y));
 
-  Function<Integer, Random<List<Integer>>> integersRnd = null; // to be implemented
+  Function<Integer, Random<List<Integer>>> integersRnd = i -> { return null; }; //List.fill(i, how to generate the randoms from a supplier?);
 }
