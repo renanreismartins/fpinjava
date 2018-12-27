@@ -19,5 +19,5 @@ public interface Random<A> extends Function<RNG, Tuple<A, RNG>> {
 
   Random<Integer> intRnd = RNG::nextInt;
 
-  Random<Boolean> booleanRnd = null; // To be implemented
+  Random<Boolean> booleanRnd = rng -> Random.map(unit(rng.nextInt()), i -> i._1 % 2 == 0).apply(rng);
 }
