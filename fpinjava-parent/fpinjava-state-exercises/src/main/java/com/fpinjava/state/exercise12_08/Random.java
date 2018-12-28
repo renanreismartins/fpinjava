@@ -12,7 +12,10 @@ public interface Random<A> extends Function<RNG, Tuple<A, RNG>> {
   }
 
   static <A, B> Random<B> map(Random<A> s, Function<A, B> f) {
-    throw new IllegalStateException("To be implemented");
+    return rng -> {
+      Random<B> bRandom = Random.flatMap(s, a -> unit(f.apply(a)));
+      return bRandom.apply(rng);
+    };
   }
 
   static <A, B, C> Random<C> map2(Random<A> ra, Random<B> rb, Function<A, Function<B, C>> f) {
