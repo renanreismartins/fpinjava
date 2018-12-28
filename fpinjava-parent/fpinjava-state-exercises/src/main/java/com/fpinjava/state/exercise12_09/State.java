@@ -27,7 +27,11 @@ public class State<S, A> {
   }
 
   public <B> State<S, B> flatMap(Function<A, State<S, B>> f) {
-    throw new IllegalStateException("To be implemented");
+    return new State<>(s -> {
+      Tuple<A, S> as = run.apply(s);
+      State<S, B> sb = f.apply(as._1);
+      return sb.run.apply(as._2);
+    });
   }
 
   public static <S, A> State<S, List<A>> sequence(List<State<S, A>> fs) {
