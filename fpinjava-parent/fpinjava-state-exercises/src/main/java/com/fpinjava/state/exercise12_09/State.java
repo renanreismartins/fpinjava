@@ -15,11 +15,11 @@ public class State<S, A> {
   }
 
   public static <S, A> State<S, A> unit(A a) {
-    throw new IllegalStateException("To be implemented");
+    return new State<>(s -> new Tuple<>(a, s));
   }
 
   public <B> State<S, B> map(Function<A, B> f) {
-    throw new IllegalStateException("To be implemented");
+    return new State<>((S s) -> new Tuple<>(f.apply(run.apply(s)._1), s));
   }
 
   public <B, C> State<S, C> map2(State<S, B> sb, Function<A, Function<B, C>> f) {
