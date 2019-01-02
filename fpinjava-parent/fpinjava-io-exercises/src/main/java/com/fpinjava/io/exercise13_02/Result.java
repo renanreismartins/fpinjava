@@ -110,7 +110,7 @@ public abstract class Result<T> implements Serializable {
 
     @Override
     public Result<String> forEachOrFail(Effect<T> c) {
-      throw new IllegalStateException("To be implemented");
+      return Result.empty();
     }
 
     @Override
@@ -218,7 +218,7 @@ public abstract class Result<T> implements Serializable {
 
     @Override
     public Result<String> forEachOrFail(Effect<T> c) {
-      throw new IllegalStateException("To be implemented");
+      return Result.success(exception.getMessage());
     }
 
     /**
@@ -300,7 +300,8 @@ public abstract class Result<T> implements Serializable {
     }
     @Override
     public Result<String> forEachOrFail(Effect<T> e) {
-      throw new IllegalStateException("To be implemented");
+      e.apply(value);
+      return empty();
     }
 
     @Override
