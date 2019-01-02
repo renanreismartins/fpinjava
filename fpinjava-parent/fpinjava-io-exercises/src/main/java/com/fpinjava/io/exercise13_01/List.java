@@ -375,7 +375,7 @@ public abstract class List<A> {
 
     @Override
     public void forEach(Effect<A> ef) {
-      throw new IllegalStateException("To be implemented");
+
     }
 
     @Override
@@ -519,8 +519,18 @@ public abstract class List<A> {
 
     @Override
     public void forEach(Effect<A> ef) {
-      throw new IllegalStateException("To be implemented");
+      forEach_(this, ef).eval();
     }
+
+    private TailCall<Void> forEach_(List<A> list, Effect<A> ef) {
+      if (list.isEmpty()) {
+        return ret(null);
+      } else {
+        ef.apply(list.head());
+        return sus(() -> forEach_(list.tail(), ef));
+      }
+    }
+
 
     @Override
     public boolean equals(Object o) {
