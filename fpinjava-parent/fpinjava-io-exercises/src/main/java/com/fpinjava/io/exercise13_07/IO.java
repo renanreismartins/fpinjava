@@ -15,7 +15,7 @@ public interface IO<A> {
   }
 
   default <B> IO<B> flatMap(Function<A, IO<B>> f) {
-    return f.apply(run());
+    return () -> f.apply(this.run()).run();
   }
 
   static <A> IO<A> unit(A a) {
