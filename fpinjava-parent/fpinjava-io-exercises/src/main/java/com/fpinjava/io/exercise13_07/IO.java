@@ -15,7 +15,7 @@ public interface IO<A> {
   }
 
   default <B> IO<B> flatMap(Function<A, IO<B>> f) {
-    throw new IllegalStateException("To be implemented");
+    return f.apply(run());
   }
 
   static <A> IO<A> unit(A a) {
