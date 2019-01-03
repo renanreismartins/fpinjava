@@ -14,11 +14,11 @@ public class ReadConsole {
 
   public static Result<Tuple<Person, Input>> person(Input input) {
     Result<Tuple<Integer, Input>> rId = input.readInt("Id:");
-    Result<Tuple<String, Input>> rFirstName = input.readString("First Name:");
-    Result<Tuple<String, Input>> rLastName = input.readString("Last Name:");
 
-    return rId.flatMap(tId -> rFirstName.flatMap(tFirstName ->
-                                                         rLastName.flatMap(tLastName ->
+    return rId.flatMap(tId -> tId._2.readString("First Name:")
+                                    .flatMap(tFirstName ->
+                                                         tFirstName._2.readString("Last Name:")
+                                                                      .flatMap(tLastName ->
                                                                                    Result.success(new Tuple<>(Person.apply(tId._1, tFirstName._1, tLastName._1), tLastName._2)))));
 
   }
