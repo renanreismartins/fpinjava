@@ -28,6 +28,6 @@ public interface IO<A> {
   }
 
   static <A> IO<List<A>> repeat(int n, IO<A> io) {
-    throw new IllegalStateException("To be implemented");
+    return List.range(0, n).foldRight(IO.unit(List.<A>list()), i -> ioAcc -> map2(ioAcc, io, a -> b -> a.cons(b)));
   }
 }
